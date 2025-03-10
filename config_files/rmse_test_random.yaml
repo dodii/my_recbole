@@ -1,0 +1,58 @@
+gpu_id: "1"
+seed: 42 # 43, 44, 45, 46
+
+# dataset config : General Recommendation
+USER_ID_FIELD: user_id
+ITEM_ID_FIELD: item_id
+RATING_FIELD: rating
+# TIME_FIELD: timestamp
+load_col:
+    inter: [user_id, item_id, rating] #, timestamp]
+
+show_progress: False
+
+# save_dataset: True
+# save_dataloaders : True
+
+# data filtering for interactions
+# val_interval:
+#     rating: "[3,inf)"    
+    # timestamp: "[1490000000,inf)" # 2017
+# # unused_col: 
+# #     inter: [rating, timestamp]
+
+# user_inter_num_interval: "[10,inf)"
+# item_inter_num_interval: "[10,inf)"
+
+# model config
+# embedding_size: 64
+
+# Training and evaluation config
+epochs: 500
+# train_batch_size: 4096 # default
+# eval_batch_size: 4096 # default
+train_batch_size: 4096 # 100k samples
+eval_batch_size: 4096
+# learner: adam
+train_neg_sample_args:
+    distribution: uniform
+    sample_num: 10
+    alpha: 1.0
+    dynamic: False
+    candidate_num: 0
+stopping_step: 10
+
+eval_args:
+    group_by: user
+    order: RO #TO
+    split: {'LS': 'valid_and_test'} # {'RS': [0.8,0.1,0.1]}
+    mode: uni10
+
+topk: [10, 20, 50]
+metric_decimal_place: 4
+
+# metrics: ['NDCG', 'Precision', 'MAP']
+# valid_metric: ndcg@10
+
+metrics: ['RMSE']
+valid_metric: RMSE
